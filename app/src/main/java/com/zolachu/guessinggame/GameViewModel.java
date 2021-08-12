@@ -1,7 +1,5 @@
 package com.zolachu.guessinggame;
 
-import android.widget.Button;
-
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -37,11 +35,11 @@ public class GameViewModel extends ViewModel {
     }
 
     private String deriveSecretWordDisplay() {
-        String display = "";
+        StringBuilder display = new StringBuilder();
         for (int i = 0; i < secretWord.length(); i++) {
-            display += checkLetter(secretWord.charAt(i));
+            display.append(checkLetter(secretWord.charAt(i)));
         }
-        return display;
+        return display.toString();
     }
 
     private char checkLetter(char c) {
@@ -57,7 +55,7 @@ public class GameViewModel extends ViewModel {
     }
 
     private boolean isLost() {
-        return (_livesLeft.getValue() == null) ? true : (_livesLeft.getValue() == 0);
+        return (_livesLeft.getValue() == null) || (_livesLeft.getValue() == 0);
     }
 
     public MutableLiveData<Boolean> getGameOver() {
