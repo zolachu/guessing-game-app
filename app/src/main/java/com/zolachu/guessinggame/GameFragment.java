@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 import com.google.android.material.navigation.NavigationView;
 import com.zolachu.guessinggame.databinding.FragmentGameBinding;
 
+import java.util.Observer;
 import java.util.Random;
 
 /**
@@ -43,7 +45,17 @@ public class GameFragment extends Fragment {
         viewModel.init();
 
 
-        updateScreen();
+        viewModel.getLivesLeft().observe(getViewLifecycleOwner(), livesLeft -> {
+            binding.lives.setText("Lives left " + livesLeft);
+        });
+
+        viewModel.getIncorrectGuesses().observe(getViewLifecycleOwner(), incorrectGuesses -> {
+            binding.incorrectGuesses.setText("Incorrect Guesses:  " + incorrectGuesses);
+        });
+
+        viewModel.getSecretWordDisplay().observe(getViewLifecycleOwner(), secretWordDisplay -> {
+            binding.word.setText(secretWordDisplay);
+        });
 
         guessButton = binding.guessButton;
         guessButton.setOnClickListener(v -> {
@@ -51,7 +63,6 @@ public class GameFragment extends Fragment {
             String guess = binding.guess.getText().toString().toUpperCase();
             viewModel.makeGuess(guess);
             binding.guess.setText("");
-            updateScreen();
 
             if (viewModel.isLost() || viewModel.isWon()) {
                 GameFragmentDirections.ActionGameFragmentToResultFragment action =
@@ -69,14 +80,6 @@ public class GameFragment extends Fragment {
         binding = null;
         super.onDestroyView();
     }
-
-    private void updateScreen() {
-        binding.word.setText(viewModel.secretWordDisplay);
-        binding.lives.setText("You have " + viewModel.livesLeft + " lives left");
-        binding.incorrectGuesses.setText("Incorrect Guesses:  " + viewModel.incorrectGuesses);
-    }
-
-
 
 
 }

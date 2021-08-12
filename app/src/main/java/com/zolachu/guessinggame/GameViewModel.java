@@ -2,28 +2,40 @@ package com.zolachu.guessinggame;
 
 import android.widget.Button;
 
+import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import java.util.Random;
 
 public class GameViewModel extends ViewModel {
     String[] words = {"Activity", "Android", "Fragment"};
-    String secretWord = "";
-    String secretWordDisplay = "";
-    String correctGuesses = "";
-    String incorrectGuesses = "";
-    int livesLeft = 8;
-    Button guessButton;
+    private static String secretWord = "";
+    private static MutableLiveData<String> _secretWordDisplay = new MutableLiveData<>();
+    private static String _correctGuesses = "";
+    private static MutableLiveData<String> _incorrectGuesses = new MutableLiveData<>("");
+    private static MutableLiveData<Integer> _livesLeft = new MutableLiveData<>(8);
+
+
+    public MutableLiveData<String> getSecretWordDisplay() {
+        return _secretWordDisplay;
+    }
+
+    public MutableLiveData<String> getIncorrectGuesses() {
+        return _incorrectGuesses;
+    }
+
+    public MutableLiveData<Integer> getLivesLeft() {
+        return _livesLeft;
+    }
 
     public void init() {
         Random rand = new Random();
         int randInt = rand.nextInt(words.length);
-        secretWord = words[randInt].toUpperCase();
-
-        secretWordDisplay = deriveSecretWordDisplay();
+        secretWord = (words[randInt].toUpperCase());
+        _secretWordDisplay.setValue(deriveSecretWordDisplay());
     }
 
-    public String deriveSecretWordDisplay() {
+    private String deriveSecretWordDisplay() {
         String display = "";
         for (int i = 0; i < secretWord.length(); i++) {
             display += checkLetter(secretWord.charAt(i));
@@ -32,18 +44,18 @@ public class GameViewModel extends ViewModel {
     }
 
     private char checkLetter(char c) {
-        if (correctGuesses.contains(String.valueOf(c)) ) {
+        if (_correctGuesses.contains(String.valueOf(c)) ) {
             return c;
         }
         return '_';
     }
 
     public boolean isWon() {
-        return secretWord.equalsIgnoreCase(secretWordDisplay);
+        return secretWord.equalsIgnoreCase(_secretWordDisplay.getValue());
     }
 
     public boolean isLost() {
-        return livesLeft == 0;
+        return (_livesLeft.getValue() == null) ? true : (_livesLeft.getValue() == 0);
     }
 
     public String wonLostMessage() {
@@ -60,11 +72,13 @@ public class GameViewModel extends ViewModel {
     public void makeGuess(String guess) {
         if (guess.length() == 1) {
             if (secretWord.contains(guess)) {
-                correctGuesses += guess;
-                secretWordDisplay = deriveSecretWordDisplay();
+                _correctGuesses += guess;
+                _secretWordDisplay.setValue(deriveSecretWordDisplay());
             } else {
-                incorrectGuesses += guess + " ";
-                livesLeft--;
+                _incorrectGuesses.setValue(_incorrectGuesses.getValue() + guess + " ");
+                if (_livesLeft.getValue() != null) {
+                    _livesLeft.setValue(_livesLeft.getValue() - 1);
+                }
             }
 
         }
