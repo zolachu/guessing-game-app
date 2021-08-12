@@ -8,11 +8,11 @@ import java.util.Random;
 public class GameViewModel extends ViewModel {
     String[] words = {"Activity", "Android", "Fragment"};
     private String secretWord = "";
-    private MutableLiveData<String> _secretWordDisplay = new MutableLiveData<>();
+    private final MutableLiveData<String> _secretWordDisplay = new MutableLiveData<>();
     private String _correctGuesses = "";
-    private MutableLiveData<String> _incorrectGuesses = new MutableLiveData<>("");
-    private MutableLiveData<Integer> _livesLeft = new MutableLiveData<>(8);
-    private MutableLiveData<Boolean> _gameOver = new MutableLiveData<>(false);
+    private final MutableLiveData<String> _incorrectGuesses = new MutableLiveData<>("");
+    private final MutableLiveData<Integer> _livesLeft = new MutableLiveData<>(8);
+    private final MutableLiveData<Boolean> _gameOver = new MutableLiveData<>(false);
 
     public MutableLiveData<String> getSecretWordDisplay() {
         return _secretWordDisplay;
@@ -61,6 +61,7 @@ public class GameViewModel extends ViewModel {
     public MutableLiveData<Boolean> getGameOver() {
         return _gameOver;
     }
+
     public String wonLostMessage() {
         String message = "";
         if (isWon()) {
@@ -72,6 +73,9 @@ public class GameViewModel extends ViewModel {
         return message;
     }
 
+    public void finishGame() {
+        _gameOver.setValue(true);
+    }
     public void makeGuess(String guess) {
         if (guess.length() == 1) {
             if (secretWord.contains(guess)) {

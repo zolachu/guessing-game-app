@@ -36,18 +36,8 @@ public class GameFragment extends Fragment {
         viewModel = new ViewModelProvider(this).get(GameViewModel.class);
         viewModel.init();
 
-
-        viewModel.getLivesLeft().observe(getViewLifecycleOwner(), livesLeft -> {
-            binding.lives.setText("Lives left " + livesLeft);
-        });
-
-        viewModel.getIncorrectGuesses().observe(getViewLifecycleOwner(), incorrectGuesses -> {
-            binding.incorrectGuesses.setText("Incorrect Guesses:  " + incorrectGuesses);
-        });
-
-        viewModel.getSecretWordDisplay().observe(getViewLifecycleOwner(), secretWordDisplay -> {
-            binding.word.setText(secretWordDisplay);
-        });
+        binding.setGameViewModel(viewModel);
+        binding.setLifecycleOwner(getViewLifecycleOwner());
 
         viewModel.getGameOver().observe(getViewLifecycleOwner(), gameOver -> {
             if (gameOver) {

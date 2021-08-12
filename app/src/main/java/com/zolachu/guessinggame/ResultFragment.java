@@ -36,8 +36,8 @@ public class ResultFragment extends Fragment {
 
         resultViewModelFactory = new ResultViewModelFactory(result);
         resultViewModel = new ViewModelProvider(this, resultViewModelFactory).get(ResultViewModel.class);
-        binding.wonLost.setText(resultViewModel.getResult());
 
+        binding.setResultViewModel(resultViewModel);
 
         binding.start.setOnClickListener(v -> {
 
