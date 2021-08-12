@@ -14,7 +14,7 @@ public class GameViewModel extends ViewModel {
     private static String _correctGuesses = "";
     private static MutableLiveData<String> _incorrectGuesses = new MutableLiveData<>("");
     private static MutableLiveData<Integer> _livesLeft = new MutableLiveData<>(8);
-
+    private static MutableLiveData<Boolean> _gameOver = new MutableLiveData<>(false);
 
     public MutableLiveData<String> getSecretWordDisplay() {
         return _secretWordDisplay;
@@ -50,14 +50,18 @@ public class GameViewModel extends ViewModel {
         return '_';
     }
 
-    public boolean isWon() {
+
+    private boolean isWon() {
         return secretWord.equalsIgnoreCase(_secretWordDisplay.getValue());
     }
 
-    public boolean isLost() {
+    private boolean isLost() {
         return (_livesLeft.getValue() == null) ? true : (_livesLeft.getValue() == 0);
     }
 
+    public MutableLiveData<Boolean> getGameOver() {
+        return _gameOver;
+    }
     public String wonLostMessage() {
         String message = "";
         if (isWon()) {
@@ -79,6 +83,10 @@ public class GameViewModel extends ViewModel {
                 if (_livesLeft.getValue() != null) {
                     _livesLeft.setValue(_livesLeft.getValue() - 1);
                 }
+            }
+
+            if (isLost() || isWon()) {
+                _gameOver.setValue(true);
             }
 
         }

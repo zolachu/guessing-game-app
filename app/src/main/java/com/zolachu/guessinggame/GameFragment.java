@@ -57,19 +57,21 @@ public class GameFragment extends Fragment {
             binding.word.setText(secretWordDisplay);
         });
 
+        viewModel.getGameOver().observe(getViewLifecycleOwner(), gameOver -> {
+            if (gameOver) {
+                GameFragmentDirections.ActionGameFragmentToResultFragment action =
+                        GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage());
+
+                Navigation.findNavController(view).navigate(action);
+            }
+        });
+
         guessButton = binding.guessButton;
         guessButton.setOnClickListener(v -> {
 
             String guess = binding.guess.getText().toString().toUpperCase();
             viewModel.makeGuess(guess);
             binding.guess.setText("");
-
-            if (viewModel.isLost() || viewModel.isWon()) {
-                GameFragmentDirections.ActionGameFragmentToResultFragment action =
-                        GameFragmentDirections.actionGameFragmentToResultFragment(viewModel.wonLostMessage());
-
-                Navigation.findNavController(view).navigate(action);
-            }
         });
 
         return view;
