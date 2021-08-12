@@ -1,11 +1,13 @@
 package com.zolachu.guessinggame;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,8 +31,6 @@ public class ResultFragment extends Fragment {
         // Inflate the layout for this fragment
         binding = FragmentResultBinding.inflate(inflater, container, false);
 
-
-
         View view = binding.getRoot();
         String result = (ResultFragmentArgs.fromBundle(requireArguments()).getResult());
 
@@ -38,7 +38,9 @@ public class ResultFragment extends Fragment {
         resultViewModel = new ViewModelProvider(this, resultViewModelFactory).get(ResultViewModel.class);
         binding.wonLost.setText(resultViewModel.getResult());
 
+
         binding.start.setOnClickListener(v -> {
+
             Navigation.findNavController(view).navigate(R.id.action_resultFragment_to_gameFragment);
                 });
 

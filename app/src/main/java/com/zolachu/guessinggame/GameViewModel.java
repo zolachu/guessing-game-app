@@ -9,12 +9,12 @@ import java.util.Random;
 
 public class GameViewModel extends ViewModel {
     String[] words = {"Activity", "Android", "Fragment"};
-    private static String secretWord = "";
-    private static MutableLiveData<String> _secretWordDisplay = new MutableLiveData<>();
-    private static String _correctGuesses = "";
-    private static MutableLiveData<String> _incorrectGuesses = new MutableLiveData<>("");
-    private static MutableLiveData<Integer> _livesLeft = new MutableLiveData<>(8);
-    private static MutableLiveData<Boolean> _gameOver = new MutableLiveData<>(false);
+    private String secretWord = "";
+    private MutableLiveData<String> _secretWordDisplay = new MutableLiveData<>();
+    private String _correctGuesses = "";
+    private MutableLiveData<String> _incorrectGuesses = new MutableLiveData<>("");
+    private MutableLiveData<Integer> _livesLeft = new MutableLiveData<>(8);
+    private MutableLiveData<Boolean> _gameOver = new MutableLiveData<>(false);
 
     public MutableLiveData<String> getSecretWordDisplay() {
         return _secretWordDisplay;
@@ -33,6 +33,7 @@ public class GameViewModel extends ViewModel {
         int randInt = rand.nextInt(words.length);
         secretWord = (words[randInt].toUpperCase());
         _secretWordDisplay.setValue(deriveSecretWordDisplay());
+        _livesLeft.setValue(8);
     }
 
     private String deriveSecretWordDisplay() {

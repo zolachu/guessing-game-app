@@ -3,23 +3,15 @@ package com.zolachu.guessinggame;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModel;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
-import android.renderscript.Sampler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
-
-
-import com.google.android.material.navigation.NavigationView;
 import com.zolachu.guessinggame.databinding.FragmentGameBinding;
 
-import java.util.Observer;
-import java.util.Random;
 
 /**
  * A simple {@link Fragment} subclass.
